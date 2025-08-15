@@ -1,0 +1,50 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+html {
+    font-size: 18px;
+    font-family: monospace;
+}
+
+button {
+    border: 0;
+    padding: .25rem .75rem;
+    font-size: 1rem;
+    cursor: pointer;
+
+    &.red {
+        background-color: maroon;
+        color: white;
+    }
+}
+
+table {
+    border-collapse: collapse;
+
+    & td, th {
+        border: 1px solid gray;
+        padding: .5rem;
+    }
+}
+
+form {
+    border: 1px solid gray;
+    margin: 1rem 0;
+    padding: 1rem;
+    max-width: 500px;
+
+    & .title {
+        font-size: 2rem;
+    }
+
+    & .field {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        
+        & input {
+            width: 100%;
+        }
+    }
+}

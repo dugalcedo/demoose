@@ -1,0 +1,20 @@
+.modal-backdrop {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100dvw;
+    height: 100dvh;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(3px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    width: 500px;
+    max-width: calc(100% - 1rem);
+    background-color: white;
+}
