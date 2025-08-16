@@ -48,6 +48,7 @@ export type Data = {
     project?: Project
     track?: Track
     demo?: Demo
+    isTeamOwner?: boolean
 }
 
 export type AdditonalData = {

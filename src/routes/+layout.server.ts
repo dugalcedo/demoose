@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 import { User, Team } from "../lib/server/models/models.js"
 import jwt from 'jsonwebtoken'
-import type { Data, UserData, Team as TeamT, Project } from '../lib/types.js'
+import type { Data, UserData, Team as TeamT, Project, Track } from '../lib/types.js'
 import { useDB } from '../lib/server/db.js'
 
 export const load = async (ctx): Promise<Data> => {
@@ -11,6 +11,8 @@ export const load = async (ctx): Promise<Data> => {
     let userData: UserData | undefined 
     let team: TeamT | undefined
     let project: Project | undefined
+    let track: Track | undefined
+    let isTeamOwner: boolean | undefined
 
     const token = ctx.cookies.get('dugdemotoken')
 
@@ -29,12 +31,24 @@ export const load = async (ctx): Promise<Data> => {
                 teams: JSON.parse(JSON.stringify(teams))
             }
 
+            // find team
             if (ctx.params.teamId) {
                 team = userData.teams.find(t => t._id === ctx.params.teamId)
             }
 
+            // find isTeamOwner
+            if (team) {
+                isTeamOwner = team.owner === userData._id
+            }
+
+            // find project
             if (team && ctx.params.projectName) {
                 project = team.projects.find(p => p.name.toLowerCase() === ctx.params.projectName?.toLowerCase())
+            }
+
+            // find track
+            if (team && project && ctx.params.trackName) {
+                track = project.tracks.find(t => t.name.toLowerCase() === ctx.params.trackName?.toLowerCase())
             }
         } catch (err) {
             console.log(err)
@@ -47,6 +61,8 @@ export const load = async (ctx): Promise<Data> => {
             teamId: ctx.params.teamId
         },
         team,
-        project
+        project,
+        track,
+        isTeamOwner
     }
 }

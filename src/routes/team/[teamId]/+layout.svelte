@@ -48,18 +48,28 @@
 
 </script>
 
-{#if !data.userData}
-    <p>You must be logged in.</p>
-{:else if !data.team}
-    <p>Invalid teamId in URL.</p>
-{:else}
-    <h2>TEAM: {data.team.name}</h2>
-    <p>Your role: <strong>{role}</strong></p>
-    {#if role === 'owner'}
-        <button class="red" onclick={handleDeleteTeamClick}>
-            Delete team
-        </button>
-        <span class="error">{deleteTeamError}</span>
+<div class="sublayout">
+    {#if !data.userData}
+        <p>You must be logged in.</p>
+    {:else if !data.team}
+        <p>Invalid teamId in URL.</p>
+    {:else}
+        <div class="head">
+            <div>
+                <h2>
+                    TEAM: <a href="/team/{data.team._id}">{data.team.name}</a>
+                </h2>
+                <p>Your role: <strong>{role}</strong></p>
+            </div>
+            {#if role === 'owner'}
+                <div class="del">
+                    <button class="red" onclick={handleDeleteTeamClick}>
+                        Delete team "{data.team.name}"
+                    </button>
+                    <span class="error">{deleteTeamError}</span>
+                </div>
+            {/if}
+        </div>
+        {@render children()}
     {/if}
-    {@render children()}
-{/if}
+</div>
