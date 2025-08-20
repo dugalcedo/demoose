@@ -9,7 +9,9 @@ export interface _UserInterface {
     email: string
     displayName: string
     password: string
-    validationToken: string
+    verificationToken: string
+    verified: boolean
+    tokenLastSent: Date
 }
 
 const UserSchema = new Schema<_UserInterface>({
@@ -45,15 +47,23 @@ const UserSchema = new Schema<_UserInterface>({
             message: `Password must be at between 8 and 64 characters and contain one of each: lowercase, uppercase, number, symbol.`
         }
     },
-    validationToken: {
+    verificationToken: {
         type: String
+    },
+    tokenLastSent: {
+        type: Date
+    },
+    verified: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 })
 
 
 UserSchema.pre('save', async function(next) {
     this.password = await bcrypt.hash(this.password, 8)
-    this.validationToken = v4()
+    this.verificationToken = v4()
     next()
 })
 

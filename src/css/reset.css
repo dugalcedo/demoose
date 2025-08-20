@@ -26,7 +26,12 @@ button {
     color: var(--fg);
     border-bottom: 1px solid var(--fg);
 
-    &:hover {
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    &:not(:disabled):hover {
         background-color: var(--bg-lighter2);
     }
 

@@ -14,7 +14,9 @@ export const GET = createDugdemoRequestHandler(async (evt, ctx) => {
 
     return {
         message: `User data retrieved.`,
-        data: userData
+        data: {
+            user: userData
+        }
     }
     
 }, {

@@ -1,9 +1,13 @@
 <script lang="ts">
     import "../css/_main_.css"
     import Header from "../components/Header.svelte";
-    import type { Snippet } from "svelte";
+    import { onMount, type Snippet } from "svelte";
     import type { Data } from "../lib/types.js";
     const { children, data } : { children: Snippet, data: Data } = $props()
+
+    onMount(() => {
+        console.log("DATA LOADED:", data)
+    })
 
     import Confirm from "../components/Confirm.svelte";
 </script>

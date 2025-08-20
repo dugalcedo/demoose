@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 import { User, Team } from "../lib/server/models/models.js"
 import jwt from 'jsonwebtoken'
-import type { Data, UserData, Team as TeamT, Project, Track, Demo } from '../lib/types.js'
+import type { Data, UserData, Team as TeamT, Project, Track, Demo, UnverifiedUserData } from '../lib/types.js'
 import { useDB } from '../lib/server/db.js'
 
 export const load = async (ctx): Promise<Data> => {
@@ -14,6 +14,7 @@ export const load = async (ctx): Promise<Data> => {
     let track: Track | undefined
     let isTeamOwner: boolean | undefined
     let demo: Demo | undefined
+    let unverifiedUserData: UnverifiedUserData | undefined
 
     const token = ctx.cookies.get('dugdemotoken')
 
@@ -22,14 +23,35 @@ export const load = async (ctx): Promise<Data> => {
             // GET USER DATA
             const payload = jwt.verify(token, process.env.JWT_SECRET || "")
             if (typeof payload === 'string') throw null;
+
             const user = await User.findById(payload._id)
             if (!user) throw null;
+
+            if (!user.verified) {
+                let msSinceLastEmail = Infinity
+
+                if (user.tokenLastSent instanceof Date) {
+                    msSinceLastEmail = new Date().getTime() - new Date(user.tokenLastSent).getTime()
+                }
+
+                unverifiedUserData = {
+                    _id: user._id.toString(),
+                    displayName: user.displayName,
+                    email: user.email,
+                    tokenLastSent: user.tokenLastSent,
+                    msSinceLastEmail
+                }
+                throw null
+            };
+
             const teams = await Team.find({ members: { $in: user._id }})
             userData = {
                 _id: user._id.toString(),
                 email: user.email,
                 displayName: user.displayName,
-                teams: JSON.parse(JSON.stringify(teams))
+                teams: JSON.parse(JSON.stringify(teams)),
+                verified: user.verified,
+                tokenLastSent: user.tokenLastSent
             }
 
             // find team
@@ -63,13 +85,12 @@ export const load = async (ctx): Promise<Data> => {
 
     return {
         userData,
-        params: {
-            teamId: ctx.params.teamId
-        },
+        params: ctx.params,
         team,
         project,
         track,
         isTeamOwner,
-        demo
+        demo,
+        unverifiedUserData
     }
 }

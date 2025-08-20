@@ -47,6 +47,8 @@ export type UserData = {
     _id: string
     email: string
     displayName: string
+    verified: boolean
+    tokenLastSent: Date
     teams: Team[]
 }
 
@@ -55,6 +57,15 @@ export type Params = {
     projectName?: string
     trackName?: string
     demoName?: string
+    verificationToken?: string
+}
+
+export type UnverifiedUserData = {
+    _id: string
+    displayName: string
+    email: string
+    tokenLastSent: Date
+    msSinceLastEmail: number
 }
 
 export type Data = {
@@ -65,6 +76,7 @@ export type Data = {
     track?: Track
     demo?: Demo
     isTeamOwner?: boolean
+    unverifiedUserData?: UnverifiedUserData
 }
 
 export type AdditonalData = {

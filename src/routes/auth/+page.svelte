@@ -6,7 +6,8 @@
     let formData = $state({
         email: "",
         password: "",
-        password2: ""
+        password2: "",
+        displayName: ""
     })
     let formError = $state("")
 
@@ -48,6 +49,12 @@
         Email
         <input type="email" required bind:value={formData.email}>
     </div>
+    {#if formType === 'Join'}
+        <div class="field">
+            Display name
+            <input type="text" required bind:value={formData.displayName}>
+        </div>
+    {/if}
     <div class="field">
         Password
         <input type="password" required bind:value={formData.password}>

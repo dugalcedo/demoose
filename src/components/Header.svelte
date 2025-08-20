@@ -21,6 +21,10 @@
                 <button onclick={logOut}>
                     Log out
                 </button>
+            {:else if data.unverifiedUserData}
+                <button onclick={logOut}>
+                    Log out
+                </button>
             {:else}
                 <a href="/auth">Log in / join</a>
             {/if}
