@@ -32,5 +32,6 @@ export const DELETE = createDugdemoRequestHandler(async (evt, ctx) => {
     }
 
 }, {
-    findUserData: true
+    findUserData: true,
+    mustBeVerified: true
 })

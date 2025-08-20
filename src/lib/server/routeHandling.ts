@@ -23,6 +23,7 @@ type DugdemoRequestHandlerOptions = {
     findUserData?: boolean
     populateUser?: boolean
     mustBeAdmin?: boolean
+    mustBeVerified?: boolean
 }
 
 
@@ -75,6 +76,13 @@ const getContext = async (evt: SvelteKitRequestEvent, options: DugdemoRequestHan
         ctx.user = await tryFindingUserData(evt)
     }
 
+    if (options.mustBeVerified) {
+        if (!ctx.user?.verified) throw {
+            status: 401,
+            message: "You must be verified to do this."
+        }
+    }
+
     return ctx
 }
 
@@ -110,4 +118,3 @@ const log = (evt: SvelteKitRequestEvent) => {
     console.log("-----")
     console.log(`${evt.request.method} @ ${evt.request.url}`)
 }
-

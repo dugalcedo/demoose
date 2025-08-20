@@ -45,6 +45,23 @@ export const load = async (ctx): Promise<Data> => {
             };
 
             const teams = await Team.find({ members: { $in: user._id }})
+                .populate({
+                    path: 'projects',
+                    populate: {
+                        path: 'tracks',
+                        populate: {
+                            path: 'demos',
+                            populate: {
+                                path: 'comments',
+                                populate: {
+                                    path: 'author',
+                                    select: ['-password', '-email', '-tokenLastSent', '-verificationToken', '-verified']
+                                }
+                            }
+                        }
+                    }
+                })
+
             userData = {
                 _id: user._id.toString(),
                 email: user.email,
@@ -85,7 +102,11 @@ export const load = async (ctx): Promise<Data> => {
 
     return {
         userData,
-        params: ctx.params,
+
+        // Must clone to maintain state reactivity
+        // Weird Sveltekit quirk
+        params: {...ctx.params},
+
         team,
         project,
         track,

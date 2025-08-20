@@ -63,5 +63,6 @@ export const POST = createDugdemoRequestHandler(async (evt, ctx) => {
     }
 
 }, {
-    findUserData: true
+    findUserData: true,
+    mustBeVerified: true
 })

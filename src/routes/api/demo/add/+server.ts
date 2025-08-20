@@ -60,7 +60,8 @@ export const POST = createDugdemoRequestHandler(async (evt, ctx) => {
     track.demos.push({
         name: body.name.toLowerCase(),
         date: new Date(),
-        comments: []
+        comments: [],
+        inspirations: []        
     })
     await team.save()
 
@@ -70,5 +71,6 @@ export const POST = createDugdemoRequestHandler(async (evt, ctx) => {
     }
 
 }, {
-    findUserData: true
+    findUserData: true,
+    mustBeVerified: true
 })

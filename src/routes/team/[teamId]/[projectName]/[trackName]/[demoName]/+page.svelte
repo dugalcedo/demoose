@@ -3,6 +3,7 @@
     const { data } : { data: Data } = $props()
     import AddCommentForm from "./AddCommentForm.svelte";
     import AddInspirationForm from "./AddInspirationForm.svelte";
+    import CommentTable from "./CommentTable.svelte";
 </script>
 
 {#if data.userData && data.team && data.project && data.track && data.demo}
@@ -39,6 +40,11 @@
                 <h4>Inspirations</h4>
                 {#if !demo.inspirations?.length}
                     This demo has no inspirations.
+                {:else}
+                    <table>
+                        <thead>
+                        </thead>
+                    </table>
                 {/if}
                 <AddInspirationForm {data} />
             </div>
@@ -46,6 +52,8 @@
                 <h4>Comments</h4>
                 {#if !demo.comments.length}
                     This demo has no comments.
+                {:else}
+                    <CommentTable comments={demo.comments} />
                 {/if}
                 <AddCommentForm {data} />
             </div>

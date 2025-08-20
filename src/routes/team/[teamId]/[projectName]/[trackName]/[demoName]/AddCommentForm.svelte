@@ -17,6 +17,7 @@
 
         const formData = Object.fromEntries(new FormData(e.currentTarget))
         formData.timestamp = ((Number(formData.m)*60*1000)+(Number(formData.s)*1000)).toString()
+
         const url = `/api/comment/add`
         const options = {
             method: "POST", 
@@ -48,7 +49,7 @@
         <h4>Add comment to "{data.demo.name}"</h4>
         <div class="field">
             <label for="add-insp-form_body">Comment</label>
-            <textarea name="body" id="add-insp-form_body" style="resize: none;"></textarea>
+            <textarea name="body" id="add-insp-form_body" style="resize: none;" required minlength="10" maxlength="300"></textarea>
         </div>
         <div class="field">
             <span>Timestamp (optional)</span>

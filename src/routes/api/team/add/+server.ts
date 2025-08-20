@@ -7,35 +7,35 @@ type AddTeamInput = {
 }
 
 export const POST = createDugdemoRequestHandler(async (evt, ctx) => {
+
     if (!ctx.user) throw {
-        message: "You must be logged in.",
-        status: 401
+        status: 401,
+        message: "You must be logged in"
     }
 
     const body: AddTeamInput = await evt.request.json()
-    console.log(body)
+    body.name = body.name.toLowerCase().replaceAll(/\s+/gm, " ")
 
-    const userIsSelf = ctx.user._id.equals(body.userId)
-
-    if (!userIsSelf) throw {
-        message: "You are not allowed to do this.",
-        status: 401
+    const existingTeam = await Team.find({ name: body.name })
+    if (existingTeam) throw {
+        status: 401,
+        message: "Team name is already taken."
     }
 
     const newTeam = await Team.create({
         name: body.name,
-        creator: ctx.user._id,
-        owner: ctx.user._id,
-        members: [ctx.user._id],
-        mods: [ctx.user._id]
+        creator: body.userId,
+        owner: body.userId,
+        mods: [body.userId],
+        members: [body.userId],
+        projects: []
     })
 
     return {
-        status: 201,
-        message: "Team created",
-        data: newTeam.toObject()
+        message: "Team added",
+        data: newTeam
     }
-
 }, {
-    findUserData: true
+    findUserData: true,
+    mustBeVerified: true
 })

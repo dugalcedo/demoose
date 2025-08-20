@@ -1,7 +1,7 @@
 import { createDugdemoRequestHandler } from "../../../../lib/server/routeHandling.js";
-import { traverseTeamForDemo } from "../../../../lib/server/teamTraversal.js";
+import { traverseTeamForTrack } from "../../../../lib/server/teamTraversal.js"
 
-type DeleteCommentInput = {
+type DeleteTrackBody = {
     userId: string
     teamId: string
     projectName: string
@@ -10,11 +10,11 @@ type DeleteCommentInput = {
 }
 
 export const DELETE = createDugdemoRequestHandler(async (evt, ctx) => {
-    const body: DeleteCommentInput = await evt.request.json()
-    const { team, track, demoIndex } = await traverseTeamForDemo(ctx.user, body)
-    track.demos.splice(demoIndex, 1)
+    const body: DeleteTrackBody = await evt.request.json()
+    const { team, project, trackIndex } = await traverseTeamForTrack(ctx.user, body)
+    project.tracks.splice(trackIndex, 1)
     await (team as any).save()
-    return { message: "Demo deleted" }
+    return { message: "Track deleted" }
 }, {
     findUserData: true,
     mustBeVerified: true

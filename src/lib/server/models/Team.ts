@@ -43,8 +43,7 @@ export interface _CommentInterface {
 const CommentSubdoc = new Schema<_CommentInterface>({
     _id: {
         type: Schema.Types.ObjectId,
-        required: true,
-        default: new Types.ObjectId()
+        required: true
     },
     body: {
         type: String,
@@ -74,8 +73,8 @@ export interface _DemoInterface {
     date: Date
     comments: _CommentInterface[]
     inspirations: _InspirationInterface[]
-    audio_url: string
-    project_url: string
+    audio_url?: string
+    project_url?: string
 }
 
 const DemoSubdoc = new Schema<_DemoInterface>({
@@ -216,6 +215,9 @@ const TeamSchema = new Schema<_TeamInterface>({
     }
 })
 
+TeamSchema.pre('save', function() {
+    this.name = this.name.toLowerCase().replaceAll(/\s+/gm, " ")
+})
 
 const _TeamModel = model('team', TeamSchema, createCollectionName('teams'))
 

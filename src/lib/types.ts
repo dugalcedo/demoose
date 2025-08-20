@@ -9,7 +9,7 @@ export type Inspiration = {
 export type Comment = {
     _id: Types.ObjectId
     body: string
-    author: string
+    author: UserData
     date: string | Date
     timestamp: number
 }
