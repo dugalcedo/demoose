@@ -43,7 +43,7 @@
     }
 </script>
 
-<div class="sublayout">
+<div class="sublayout" class:fade={data.track}>
     {#if !data.userData}
         <p>You are not logged in.</p>
     {:else if !data.team}

@@ -48,7 +48,7 @@
 
 </script>
 
-<div class="sublayout">
+<div class="sublayout" class:fade={data.project}>
     {#if !data.userData}
         <p>You must be logged in.</p>
     {:else if !data.team}

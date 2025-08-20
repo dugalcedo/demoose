@@ -1,6 +1,6 @@
 import { createDugdemoRequestHandler } from "../../../../lib/server/routeHandling.js";
 import { Team, User } from "../../../../lib/server/models/models.js";
-
+import { getTeamAndUser } from "../../../../lib/server/teamTraversal.js";
 
 type AddProjectInput = {
     name: string
@@ -9,24 +9,9 @@ type AddProjectInput = {
 }
 
 export const POST = createDugdemoRequestHandler(async (evt, ctx) => {
-    if (!ctx.user) throw {
-        status: 401,
-        message: "You must be logged in."
-    }
 
     const body: AddProjectInput = await evt.request.json()
-
-    if (!ctx.user._id.equals(body.userId)) throw {
-        status: 401,
-        message: "You are not allowed to edit this user."
-    }
-
-    const team = await Team.findById(body.teamId)
-
-    if (!team) throw {
-        status: 404,
-        message: "Team not found."
-    }
+    const { team, user } = await getTeamAndUser(ctx.user, body)
 
     const existingProject = team.projects.find(p => p.name.toLowerCase() === body.name.toLowerCase());
     if (existingProject) throw {
@@ -36,12 +21,12 @@ export const POST = createDugdemoRequestHandler(async (evt, ctx) => {
 
     const newProject = {
         name: body.name.toLowerCase(),
-        mods: [ctx.user._id],
+        mods: [user._id],
         tracks: []
     }
 
     team.projects.push(newProject)
-    await team.save()
+    await (team as any).save()
 
     return {
         message: `Project created`,

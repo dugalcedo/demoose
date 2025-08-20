@@ -70,6 +70,20 @@
     & > .body {
         padding: .5rem;
     }
+
+    /* FADE */
+    &.fade {
+        & > .head {
+            opacity: 0.5;
+
+            &:hover {
+                opacity: 1;
+                & + .body {
+                    opacity: 0.5;
+                }
+            }
+        }
+    }
 }
 
 .responsive {

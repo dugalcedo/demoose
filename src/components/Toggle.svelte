@@ -34,11 +34,22 @@
 
 <style>
     .toggle {
-        & button {
-            background-color: transparent;
+        & > button {
 
             &.selected {
-                background-color: lightgray;
+                background-color: rgb(52, 216, 180);
+                color: var(--bg);
+                border-color: rgb(0, 114, 80);
+            }
+
+            border-radius: 0;
+
+            &:first-child {
+                border-radius: .25rem 0 0 .25rem;
+            }
+
+            &:last-child {
+                border-radius: 0 .25rem .25rem 0;
             }
         }
     }
