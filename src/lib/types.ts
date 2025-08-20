@@ -1,10 +1,26 @@
+import { Types } from "mongoose"
+
+export type Inspiration = {
+    _id: Types.ObjectId
+    description: string
+    url?: string
+}
+
 export type Comment = {
-    
+    _id: Types.ObjectId
+    body: string
+    author: string
+    date: string | Date
+    timestamp: number
 }
 
 export type Demo = {
     name: string
+    date: string | Date
     comments: Comment[]
+    inspirations: Inspiration[]
+    audio_url?: string
+    project_url?: string
 }
 
 export type Track = {

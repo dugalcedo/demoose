@@ -10,15 +10,34 @@
 
 </script>
 
-<header>
-    <h1>demoose</h1>
-    <nav>
-        {#if data.userData}
-            <button onclick={logOut}>
-                Log out
-            </button>
-        {:else}
-            <a href="/auth">Log in / join</a>
-        {/if}
-    </nav>
-</header>
+<div class="header-wrapper">
+    <header class="responsive">
+        <div>
+            <h1>demoose</h1>
+        </div>
+        <nav>
+            {#if data.userData}
+                <a href="/">Your teams</a>
+                <button onclick={logOut}>
+                    Log out
+                </button>
+            {:else}
+                <a href="/auth">Log in / join</a>
+            {/if}
+        </nav>
+    </header>
+</div>
+
+<style>
+    .header-wrapper {
+        background-color: black;
+        padding: 1rem 0;
+        margin-bottom: 1rem;
+    }
+
+    header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+    }
+</style>

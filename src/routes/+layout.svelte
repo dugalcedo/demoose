@@ -11,7 +11,7 @@
 
 <Header {data} />
 
-{@render children()}
+<main class="responsive">{@render children()}</main>
 
 <!-- modals -->
 <Confirm />

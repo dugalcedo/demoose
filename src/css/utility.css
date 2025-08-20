@@ -16,13 +16,27 @@
 .modal {
     width: 500px;
     max-width: calc(100% - 1rem);
-    background-color: white;
+    background-color: var(--bg-lighter1);
+
+    & > .head {
+        background-color: white;
+        color: black;
+        padding: .5rem;
+    }
+
+    & > .body {
+        padding: .5rem;
+    }
+
+    & > .foot {
+        padding: .5rem;
+        background-color: black;
+    }
 }
 
 .sublayout {
-    border: 1px solid gray;
-    padding: 1rem;
-    background-color: rgba(0, 0, 0, 0.1);
+    border-left: 1px solid gray;
+    background-color: rgba(255, 255, 255, 0.025);
 
     & > .head {
         display: flex;
@@ -31,9 +45,41 @@
         background-color: black;
         color: white;
         padding: .5rem;
+        margin-bottom: .5rem;
 
-        & a {
-            color: cyan;
+        & .red {
+            font-size: .7rem;
+            opacity: .3;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+        & h2, h3, h4, h5, h6 {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            & img {
+                width: 30px;
+            }
         }
     }
+
+    & > .body {
+        padding: .5rem;
+    }
+}
+
+.responsive {
+    width: 1100px;
+    max-width: calc(100% - 1rem);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.error {
+    color: #fd4141;
+    border-bottom: 1px dashed #fd4141;
 }

@@ -3,6 +3,7 @@
     import { type UserData } from "../lib/types.js";
     const { userData } : { userData: UserData } = $props()
     import TeamPanelTr from "./TeamPanelTR.svelte";
+    import { getErrorMessage } from "../lib/index.js";
 
     let createTeamError = $state("")
 
@@ -25,8 +26,7 @@
         const res = await fetch(url, options)
 
         if (!res.ok) { 
-            const { message } = await res.json()
-            createTeamError = message
+            createTeamError = await getErrorMessage(res)
             return
         }
 

@@ -52,7 +52,11 @@
         <p>Invalid project name in the URL.</p>
     {:else}
         <div class="head">
-            <h3>PROJECT: <a href="/team/{data.team._id}/{data.project.name}">{data.project.name}</a></h3>
+            <h3>
+                <img src="/icons/project.svg" alt="project">
+                PROJECT: 
+                <a href="/team/{data.team._id}/{data.project.name}">{data.project.name}</a>
+            </h3>
             {#if data.isTeamOwner}
                 <div class="del">
                     <button class="red" onclick={handleDeleteProjectClick}>
@@ -62,6 +66,6 @@
                 </div>
             {/if}
         </div>
-        {@render children()}
+        <div class="body">{@render children()}</div>
     {/if}
 </div>

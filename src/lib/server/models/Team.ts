@@ -1,7 +1,39 @@
 import { Schema, model, Types } from "mongoose";
 import { createCollectionName } from "./util.js";
+import validator from "validator";
 
-interface _CommentInterface {
+export interface _InspirationInterface {
+    url?: string
+    description: string
+    _id: Types.ObjectId
+}
+
+const InspirationSubdoc = new Schema<_InspirationInterface>({
+    _id: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        default: new Types.ObjectId()
+    },
+    url: {
+        type: String,
+        validate: [
+            {
+                message: "Must be a URL",
+                validator(v: string) {
+                    return validator.isURL(v)
+                }
+            }
+        ]
+    },
+    description: {
+        type: String,
+        length: [10, 300],
+        required: true
+    }
+})
+
+export interface _CommentInterface {
+    _id: Types.ObjectId
     body: string
     author: Types.ObjectId
     date: Date
@@ -9,6 +41,11 @@ interface _CommentInterface {
 }
 
 const CommentSubdoc = new Schema<_CommentInterface>({
+    _id: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        default: new Types.ObjectId()
+    },
     body: {
         type: String,
         length: [1, 300],
@@ -32,10 +69,13 @@ const CommentSubdoc = new Schema<_CommentInterface>({
     }
 })
 
-interface _DemoInterface {
+export interface _DemoInterface {
     name: string
     date: Date
     comments: _CommentInterface[]
+    inspirations: _InspirationInterface[]
+    audio_url: string
+    project_url: string
 }
 
 const DemoSubdoc = new Schema<_DemoInterface>({
@@ -53,10 +93,37 @@ const DemoSubdoc = new Schema<_DemoInterface>({
         type: [CommentSubdoc],
         required: true,
         default: []
+    },
+    inspirations: {
+        type: [InspirationSubdoc],
+        required: true,
+        default: []
+    },
+    audio_url: {
+        type: String,
+        validate: [
+            {
+                message: "Must be a URL",
+                validator(v: string) {
+                    return validator.isURL(v)
+                }
+            }
+        ]
+    },
+    project_url: {
+        type: String,
+        validate: [
+            {
+                message: "Must be a URL",
+                validator(v: string) {
+                    return validator.isURL(v)
+                }
+            }
+        ]
     }
 })
 
-interface _TrackInterface {
+export interface _TrackInterface {
     name: string
     demos: _DemoInterface[]
 }
@@ -74,7 +141,7 @@ const TrackSubdoc = new Schema<_TrackInterface>({
     }
 })
 
-interface _ProjectInterface {
+export interface _ProjectInterface {
     name: string
     tracks: _TrackInterface[]
 }

@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 import { User, Team } from "../lib/server/models/models.js"
 import jwt from 'jsonwebtoken'
-import type { Data, UserData, Team as TeamT, Project, Track } from '../lib/types.js'
+import type { Data, UserData, Team as TeamT, Project, Track, Demo } from '../lib/types.js'
 import { useDB } from '../lib/server/db.js'
 
 export const load = async (ctx): Promise<Data> => {
@@ -13,6 +13,7 @@ export const load = async (ctx): Promise<Data> => {
     let project: Project | undefined
     let track: Track | undefined
     let isTeamOwner: boolean | undefined
+    let demo: Demo | undefined
 
     const token = ctx.cookies.get('dugdemotoken')
 
@@ -50,6 +51,11 @@ export const load = async (ctx): Promise<Data> => {
             if (team && project && ctx.params.trackName) {
                 track = project.tracks.find(t => t.name.toLowerCase() === ctx.params.trackName?.toLowerCase())
             }
+
+            // find demo
+            if (team && project && track && ctx.params.demoName) {
+                demo = track.demos.find(d => d.name.toLowerCase() === ctx.params.demoName?.toLowerCase())
+            }
         } catch (err) {
             console.log(err)
         }
@@ -63,6 +69,7 @@ export const load = async (ctx): Promise<Data> => {
         team,
         project,
         track,
-        isTeamOwner
+        isTeamOwner,
+        demo
     }
 }

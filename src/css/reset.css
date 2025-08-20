@@ -10,23 +10,44 @@ html {
 
 button, input, textarea, option {
     font-family: monospace;
+    
+    &:focus {
+        outline: 2px dashed var(--hl);
+    }
 }
 
 button {
     border: 0;
     padding: .25rem .75rem;
+    border-radius: .25rem;
     font-size: 1rem;
     cursor: pointer;
+    background-color: var(--bg-lighter1);
+    color: var(--fg);
+    border-bottom: 1px solid var(--fg);
+
+    &:hover {
+        background-color: var(--bg-lighter2);
+    }
 
     &.red {
         background-color: maroon;
         color: white;
+
+        &:hover {
+            background-color: rgb(199, 0, 0);
+        }
     }
 }
 
-input {
+input, textarea {
     border: 0;
-    padding: .25rem;
+    padding: .5rem;
+    border-radius: .25rem;
+}
+
+textarea {
+    height: 15ch;
 }
 
 table {
@@ -50,7 +71,9 @@ form {
 
     & .field {
         display: grid;
+        align-items: center;
         grid-template-columns: 1fr 2fr;
+        margin: .5rem 0;
         
         & input {
             width: 100%;

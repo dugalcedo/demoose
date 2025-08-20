@@ -1,0 +1,27 @@
+:root {
+    --RGB_bg: 20, 20, 20;
+    --RGB_bg-lighter1: 50, 50, 50;
+    --RGB_bg-lighter2: 80, 80, 80;
+    --RGB_fg: 221, 221, 221;
+    --bg: rgb(var(--RGB_bg));
+    --bg-lighter1: rgb(var(--RGB_bg-lighter1));
+    --bg-lighter2: rgb(var(--RGB_bg-lighter2));
+    --fg: rgb(var(--RGB_fg));
+
+    --hl: rgb(73, 231, 179);
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--fg);
+}
+
+a {
+    color: var(--hl);
+    text-decoration: none;
+    font-weight: bold;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}

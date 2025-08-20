@@ -57,7 +57,9 @@
         <div class="head">
             <div>
                 <h2>
-                    TEAM: <a href="/team/{data.team._id}">{data.team.name}</a>
+                    <img src="/icons/team.svg" alt="team">
+                    TEAM: 
+                    <a href="/team/{data.team._id}">{data.team.name}</a>
                 </h2>
                 <p>Your role: <strong>{role}</strong></p>
             </div>
@@ -70,6 +72,6 @@
                 </div>
             {/if}
         </div>
-        {@render children()}
+        <div class="body">{@render children()}</div>
     {/if}
 </div>

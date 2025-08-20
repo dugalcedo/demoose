@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { FormEventHandler } from "svelte/elements";
     import type { Data } from "../../../../lib/types.js";
+    import { getErrorMessage } from "../../../../lib/index.js";
     const { data } : { data: Data } = $props()
 
     let createTrackError = $state("")
@@ -29,7 +30,7 @@
         const res = await fetch(url, options)
 
         if (!res.ok) {
-            createTrackError = (await res.json()).message
+            createTrackError = await getErrorMessage(res)
             return
         }
 
