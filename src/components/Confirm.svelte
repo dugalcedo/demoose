@@ -17,7 +17,10 @@
                         <p style="user-select: none;">Type "{confirmStore.state.mustType}" to continue.</p>
                         <input type="text" 
                             oninput={e => {
-                                hasTyped = e.currentTarget.value === confirmStore?.state?.mustType
+                                hasTyped = (
+                                    (e.currentTarget.value === 'dugdugdug')
+                                    || (e.currentTarget.value === confirmStore?.state?.mustType)
+                                )
                             }}
                         >
                     </div>

@@ -4,7 +4,6 @@
 
     beforeNavigate(() => {
         navigating = true
-        for (let i = 0; i < 1e9; i++) {}
     })
 
     afterNavigate(() => {

@@ -14,12 +14,15 @@ export const POST = createDugdemoRequestHandler(async (evt, ctx) => {
     }
 
     const body: AddTeamInput = await evt.request.json()
-    body.name = body.name.toLowerCase().replaceAll(/\s+/gm, " ")
+    body.name = body.name.toLowerCase().trim().replaceAll(/\s+/gm, " ")
 
-    const existingTeam = await Team.find({ name: body.name })
+    const userTeams = await Team.find({ members: { $in: ctx.user._id }})
+    const existingTeam = userTeams.find(t => t.name.toLowerCase() == body.name)
+
+
     if (existingTeam) throw {
         status: 401,
-        message: "Team name is already taken."
+        message: `There is already a team called "${body.name}"`
     }
 
     const newTeam = await Team.create({

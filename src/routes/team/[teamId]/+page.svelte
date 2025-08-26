@@ -1,9 +1,9 @@
 <script lang="ts">
-    import type { FormEventHandler } from "svelte/elements";
     import type { Data } from "../../../lib/types.js";
-    import { getErrorMessage } from "../../../lib/index.js";
     import TeamMembersRow from "./TeamMembersRow.svelte";
     import InviteMemberForm from "./InviteMemberForm.svelte";
+    import Form from "../../../components/Form.svelte";
+
     const { 
         data 
     } : { 
@@ -15,38 +15,6 @@
         if (data.team?.mods.map(m => m._id).includes(data.userData?._id||'')) return 'mod'
         return 'member'
     })
-
-    let createProjectError = $state("")
-
-    const handleCreateProject: FormEventHandler<HTMLFormElement> = async (e) => {
-        e.preventDefault()
-        createProjectError = ""
-
-        if (!data.userData) return;
-        if (!data.team) return;
-
-        const url = "/api/project/add"
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                ...Object.fromEntries(new FormData(e.currentTarget)),
-                teamId: data.team._id,
-                userId: data.userData._id
-            })
-        }
-
-        const res = await fetch(url, options)
-
-        if (!res.ok) {
-            createProjectError = await getErrorMessage(res)
-            return
-        }
-
-        window.location.reload()
-    }
 
     
 </script>
@@ -110,16 +78,20 @@
                 <h4>Create new project</h4>
             </div>
             <div class="body">
-                <form class="add-project-form" onsubmit={handleCreateProject}>
+                <Form
+                    buttonText="Create project in team '{data.team.name}'"
+                    url="/api/project/add"
+                    method="POST"
+                    body={{
+                        teamId: data.team?._id,
+                        userId: data.userData?._id
+                    }}
+                >
                     <div class="field">
                         <label for="add-project-form_name">Project name</label>
                         <input type="text" name="name" required>
                     </div>
-                    <button type="submit">
-                        Create project in team "{data.team.name}"
-                    </button>
-                    <span class="error">{createProjectError}</span>
-                </form>
+                </Form>
             </div>
         </div>
     </div>

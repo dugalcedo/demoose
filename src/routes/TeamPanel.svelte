@@ -1,37 +1,9 @@
 <script lang="ts">
-    import type { FormEventHandler } from "svelte/elements";
     import { type UserData } from "../lib/types.js";
     const { userData } : { userData: UserData } = $props()
     import TeamPanelTr from "./TeamPanelTR.svelte";
-    import { getErrorMessage } from "../lib/index.js";
+    import Form from "../components/Form.svelte";
 
-    let createTeamError = $state("")
-
-    const createTeam: FormEventHandler<HTMLFormElement> = async (e) => {
-        e.preventDefault()
-
-        const formData = {
-            ...Object.fromEntries(new FormData(e.currentTarget)),
-            userId: userData._id
-        }
-
-        const url = `/api/team/add`
-
-        const options = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData)
-        }
-
-        const res = await fetch(url, options)
-
-        if (!res.ok) { 
-            createTeamError = await getErrorMessage(res)
-            return
-        }
-
-        window.location.reload()
-    }
 </script>
 
 <div class="team-panel">
@@ -66,16 +38,18 @@
                 <p>Create a team</p>
             </div>
             <div class="body">
-                <form class="create-team-form" onsubmit={createTeam}>
+                <Form
+                    class="create-team-form"
+                    url="/api/team/add"
+                    method="POST"
+                    body={{ userId: userData._id }}
+                    buttonText="Create team"
+                >
                     <div class="field">
                         <label for="create-team-form_name">Team name</label>
                         <input type="text" required name="name">
                     </div>
-                    <button type="submit">
-                        Create team
-                    </button>
-                    <span class="error">{createTeamError}</span>
-                </form>
+                </Form>
             </div>
         </div>
     </div>

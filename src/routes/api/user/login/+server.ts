@@ -14,12 +14,20 @@ export const POST = createDugdemoRequestHandler(async (evt) => {
         message: 'Database down.'
     }
 
-    const formData = await evt.request.json()
+    const body = await evt.request.json()
 
-    const foundUser = await User.findOne({ email: formData.email })
-    if (!foundUser) return BAD_LOGIN_ERROR
-    const validPwd = await bcrypt.compare(formData.password, foundUser.password)
-    if (!validPwd) return BAD_LOGIN_ERROR
+    const foundUser = await User.findOne({ email: body.email })
+    if (!foundUser) {
+        console.log(`WRONG EMAIL`)
+        return BAD_LOGIN_ERROR
+    }
+
+    const validPwd = await bcrypt.compare(body.password, foundUser.password)
+    if (!validPwd) {
+        console.log(`WRONG PASSWORD`)
+        return BAD_LOGIN_ERROR   
+    }
+    
     const token = jwt.sign({ _id: foundUser._id }, process.env.JWT_SECRET)
     evt.cookies.set('dugdemotoken', token, {
         path: "/",
