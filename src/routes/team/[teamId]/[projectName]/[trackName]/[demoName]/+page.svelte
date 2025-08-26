@@ -43,7 +43,27 @@
                 {:else}
                     <table>
                         <thead>
+                            <tr>
+                                <th>URL</th>
+                                <th>Description</th>
+                            </tr>
                         </thead>
+                        <tbody>
+                            {#each demo.inspirations as insp (insp)}
+                                <tr>
+                                    <td>
+                                        {#if insp.url}
+                                            <a href={insp.url}>
+                                                {insp.url.slice(0, 30)}{#if insp.url.length > 30}...{/if}
+                                            </a>
+                                        {:else}
+                                            none
+                                        {/if}
+                                    </td>
+                                    <td>{insp.description}</td>
+                                </tr>
+                            {/each}
+                        </tbody>
                     </table>
                 {/if}
                 <AddInspirationForm {data} />

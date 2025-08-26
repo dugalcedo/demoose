@@ -1,31 +1,34 @@
 import { createDugdemoRequestHandler } from "../../../../lib/server/routeHandling.js";
 import { traverseTeamForDemo } from "../../../../lib/server/teamTraversal.js"
-import { Types } from "mongoose"
+import { Types } from "mongoose";
 
-type AddCommentInput = {
+type AddInspirationInput = {
     userId: string
     teamId: string
     projectName: string
     trackName: string
     demoName: string
-    body: string
-    timestamp: number
+    description: string
+    url?: string
 }
 
 export const POST = createDugdemoRequestHandler(async (evt, ctx) => {
-    const body: AddCommentInput = await evt.request.json()
-    const { team, user, demo } = await traverseTeamForDemo(ctx.user, body, { requiredTeamRole: 'member' })
-    demo.comments.push({
+
+    const body: AddInspirationInput = await evt.request.json()
+    const { team, demo } = await traverseTeamForDemo(ctx.user, body)
+
+    demo.inspirations.push({
         _id: new Types.ObjectId(),
-        body: body.body,
-        author: user._id,
-        date: new Date(),
-        timestamp: body.timestamp
+        description: body.description,
+        url: body.url
     })
+
     await team.save()
+
     return {
-        message: "Comment added"
+        message: "Inspiration added"
     }
+
 }, {
     findUserData: true,
     mustBeVerified: true

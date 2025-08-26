@@ -1,13 +1,12 @@
 import { 
-    User, 
     Team, 
-    type UserInterface,
-    type TeamInterface,
     type ProjectInterface,
     type TrackInterface,
     type DemoInterface,
     type InspirationInterface,
-    type CommentInterface
+    type CommentInterface,
+    type UserType,
+    type TeamType
 } from "./models/models.js";
 
 import {
@@ -15,16 +14,17 @@ import {
     verifyTeamRole
 } from './teamRoleVerification.js'
 
+
 type TeamTraversalOptions = {
     requiredTeamRole: TeamRole
 }
 
-type TeamTraversalFunction<Input, Output> = (user: UserInterface | null |  undefined, body: Input, options?: TeamTraversalOptions) => Promise<Output>;
+type TeamTraversalFunction<Input, Output> = (user: UserType | null |  undefined, body: Input, options?: TeamTraversalOptions) => Promise<Output>;
 
 ////////// TEAM
 
 type TeamInput = { teamId: string }
-type TeamOutput = { user: UserInterface, team: TeamInterface}
+type TeamOutput = { user: UserType, team: TeamType}
 export const getTeamAndUser: TeamTraversalFunction<TeamInput, TeamOutput> = async (user, body, options) => {
     if (!user) throw { status: 401, message: "You must be logged in" }
     const team = await Team.findById(body.teamId)

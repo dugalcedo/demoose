@@ -4,9 +4,8 @@ dotenv.config()
 
 import { type RequestHandler, type RequestEvent } from "@sveltejs/kit";
 import jwt from "jsonwebtoken";
-import { User, type UserInterface } from './models/models.js';
+import { User, type UserType } from './models/models.js';
 import { useDB } from './db.js';
-import { Types } from 'mongoose';
 
 type DugDemoResponse = {
     message?: string
@@ -16,7 +15,7 @@ type DugDemoResponse = {
 }
 
 type DugdemoRequestHandlerContext = {
-    user?: UserInterface | null
+    user?: UserType | undefined | null
 }
 
 type DugdemoRequestHandlerOptions = {
@@ -59,11 +58,12 @@ export const createDugdemoRequestHandler = (callback: DugdemoRequestHandlerCallb
             })
         } catch (error) {
             console.log(error)
+            const { message, status } = parseError(error)
             return Response.json({
-                message: (error as any)?.message || "Internal server error.",
+                message,
                 error: true
             }, {
-                status: (error as any)?.status || 500
+                status
             })
         }
     }
@@ -86,12 +86,12 @@ const getContext = async (evt: SvelteKitRequestEvent, options: DugdemoRequestHan
     return ctx
 }
 
-const tryFindingUserData = async (evt: SvelteKitRequestEvent): Promise<UserInterface | null> => {
+const tryFindingUserData = async (evt: SvelteKitRequestEvent): Promise<UserType | null> => {
     const token = evt.cookies.get('dugdemotoken') || evt.request.headers.get('x-token')
     if (!token) return null;
     const payload = tryParsingToken(token);
     if (!payload) return null;
-    const user = await User.findById(payload._id).lean()
+    const user = await User.findById(payload._id)
     return user || null
 }
 
@@ -117,4 +117,18 @@ const tryParsingToken = (token: string): jwt.JwtPayload | null => {
 const log = (evt: SvelteKitRequestEvent) => {
     console.log("-----")
     console.log(`${evt.request.method} @ ${evt.request.url}`)
+}
+
+
+const parseError = (error: undefined | any): { status: number, message: string } => {
+    let status = error?.status || 500
+    let message = error?.message || "Internal server error"
+
+    if (error._message.includes('validation')) {
+        message = Object.values(error.errors).map(({ properties }: any) => {
+            return `${properties?.path}: ${properties?.message}`
+        }).join(', ')
+    }
+
+    return { status, message }
 }

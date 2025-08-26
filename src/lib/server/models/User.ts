@@ -1,4 +1,4 @@
-import { Schema, model, Types } from "mongoose";
+import { Schema, model, Types, type HydratedDocument } from "mongoose";
 import validator from 'validator'
 import bcrypt from 'bcrypt'
 import { v4 } from 'uuid'
@@ -67,6 +67,8 @@ UserSchema.pre('save', async function(next) {
     next()
 })
 
-const _UserModel = model('user', UserSchema, createCollectionName('users'))
+const _UserModel = model<_UserInterface>('user', UserSchema, createCollectionName('users'))
+
+export type _UserType = HydratedDocument<_UserInterface>
 
 export default _UserModel

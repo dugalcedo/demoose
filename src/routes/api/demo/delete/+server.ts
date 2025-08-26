@@ -13,7 +13,7 @@ export const DELETE = createDugdemoRequestHandler(async (evt, ctx) => {
     const body: DeleteCommentInput = await evt.request.json()
     const { team, track, demoIndex } = await traverseTeamForDemo(ctx.user, body)
     track.demos.splice(demoIndex, 1)
-    await (team as any).save()
+    await team.save()
     return { message: "Demo deleted" }
 }, {
     findUserData: true,

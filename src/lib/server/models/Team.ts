@@ -1,4 +1,4 @@
-import { Schema, model, Types } from "mongoose";
+import { Schema, model, Types, type HydratedDocument } from "mongoose";
 import { createCollectionName } from "./util.js";
 import validator from "validator";
 
@@ -20,7 +20,7 @@ const InspirationSubdoc = new Schema<_InspirationInterface>({
             {
                 message: "Must be a URL",
                 validator(v: string) {
-                    return validator.isURL(v)
+                    return !v || validator.isURL(v)
                 }
             }
         ]
@@ -219,6 +219,8 @@ TeamSchema.pre('save', function() {
     this.name = this.name.toLowerCase().replaceAll(/\s+/gm, " ")
 })
 
-const _TeamModel = model('team', TeamSchema, createCollectionName('teams'))
+const _TeamModel = model<_TeamInterface>('team', TeamSchema, createCollectionName('teams'))
+
+export type _TeamType = HydratedDocument<_TeamInterface>
 
 export default _TeamModel

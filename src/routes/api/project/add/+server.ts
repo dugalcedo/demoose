@@ -26,7 +26,7 @@ export const POST = createDugdemoRequestHandler(async (evt, ctx) => {
     }
 
     team.projects.push(newProject)
-    await (team as any).save()
+    await team.save()
 
     return {
         message: `Project created`,

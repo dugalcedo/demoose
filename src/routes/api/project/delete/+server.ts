@@ -12,7 +12,7 @@ export const DELETE = createDugdemoRequestHandler(async (evt, ctx) => {
     const body: DeleteProjectInput = await evt.request.json()
     const { team, projectIndex } = await traverseTeamForProject(ctx.user, body, { requiredTeamRole: 'owner' })
     team.projects.splice(projectIndex, 1)
-    await (team as any).save()
+    await team.save()
     return { message: "Project deleted." }
 }, {
     findUserData: true
