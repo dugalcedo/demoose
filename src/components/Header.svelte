@@ -12,12 +12,18 @@
 
 <div class="header-wrapper">
     <header class="responsive">
-        <div>
-            <h1>demoose</h1>
+        <div class="logo">
+            <img src="/moose.png" alt="cartoon moose">
+            <a href="/">
+                <h1>demoose</h1>
+            </a>
         </div>
         <nav>
             {#if data.userData}
                 <a href="/">Your teams</a>
+                {#if data.userData.tier == 'admin'}
+                    <a href="/admin">Admin panel</a>
+                {/if}
                 <button onclick={logOut}>
                     Log out
                 </button>
@@ -33,6 +39,17 @@
 </div>
 
 <style>
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        & img {
+            width: 100px;
+            margin: -15px;
+        }
+    }
+
     .header-wrapper {
         background-color: black;
         padding: 1rem 0;
@@ -43,5 +60,14 @@
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
+    }
+
+    nav {
+        display: flex;
+        align-items: center;
+
+        & a {
+            padding: 1rem;
+        }
     }
 </style>

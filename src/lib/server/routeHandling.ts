@@ -37,14 +37,6 @@ export const createDugdemoRequestHandler = (callback: DugdemoRequestHandlerCallb
 
 
         try {
-            // Must be admin
-            if (options?.mustBeAdmin) {
-                if (evt.request.headers.get('x-admin') !== process.env.ADMIN_PWD) throw {
-                    message: "You must be an admin to do this.",
-                    status: 401
-                }
-            }
-
             await useDB()
             const ctx = await getContext(evt, options)
             const dugDemoResponse = await callback(evt, ctx)
@@ -74,6 +66,11 @@ const getContext = async (evt: SvelteKitRequestEvent, options: DugdemoRequestHan
 
     if (options.findUserData) {
         ctx.user = await tryFindingUserData(evt)
+    }
+
+    if (options.mustBeAdmin) {
+        if (!ctx.user) throw { status: 404, message: "N0t f0und" }
+        if (ctx.user.tier !== 'admin') throw { status: 404, message: "N0t f0und..." }
     }
 
     if (options.mustBeVerified) {

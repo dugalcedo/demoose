@@ -2,11 +2,22 @@
     import type { FormEventHandler } from "svelte/elements";
     import type { Data } from "../../../lib/types.js";
     import { getErrorMessage } from "../../../lib/index.js";
-    const { data } : { data: Data } = $props()
+    import TeamMembersRow from "./TeamMembersRow.svelte";
+    const { 
+        data 
+    } : { 
+        data: Data 
+    } = $props()
+
+    const role = $derived.by(() => {
+        if (data.team?.owner === data.userData?._id) return 'owner'
+        if (data.team?.mods.map(m => m._id).includes(data.userData?._id||'')) return 'mod'
+        return 'member'
+    })
 
     let createProjectError = $state("")
 
-    const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+    const handleCreateProject: FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault()
         createProjectError = ""
 
@@ -35,12 +46,15 @@
 
         window.location.reload()
     }
+
+    
 </script>
 
 {#if data.userData && data.team}
     {#if data.team.projects.length == 0}
         <p>This team has no projects.</p>
     {:else}
+        <h3>Projects</h3>
         <table>
             <thead>
                 <tr>
@@ -61,7 +75,35 @@
         </table>
     {/if}
 
-    <form class="add-project-form" onsubmit={handleSubmit}>
+    <h3>Mebers</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Display name</th>
+                <th>Role</th>
+                {#if role === 'owner'}
+                    <th></th>
+                {/if}
+            </tr>
+        </thead>
+        <tbody>
+            {#each data.team.members as member}
+                <TeamMembersRow {member} {role} data={data} team={data.team} />
+            {/each}
+            {#if ['owner', 'mod'].includes(role)}
+                <tr>
+                    <td colspan="100">
+                        <input type="text" aria-label="Invite user" name="username" placeholder="Enter username">
+                        <button>Invite user</button>
+                        <br>
+                        <span class="error"></span>
+                    </td>
+                </tr>
+            {/if}
+        </tbody>
+    </table>
+
+    <form class="add-project-form" onsubmit={handleCreateProject}>
         <h4>Create new project</h4>
         <div class="field">
             <label for="add-project-form_name">Project name</label>

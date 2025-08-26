@@ -4,6 +4,13 @@ import { createDugdemoRequestHandler } from "../../../../lib/server/routeHandlin
 import { User } from "../../../../lib/server/models/models.js";
 import jwt from 'jsonwebtoken'
 
+type JoinInput = {
+    email: string
+    password: string
+    password2: string
+    displayName: string
+}
+
 export const POST = createDugdemoRequestHandler(async (evt) => {
     if (!process.env.JWT_SECRET) throw {
         status: 503,
@@ -11,8 +18,13 @@ export const POST = createDugdemoRequestHandler(async (evt) => {
         message: 'Database down.'
     }
 
-    const formData = await evt.request.json()
-    const newUser = await User.create(formData)
+    const formData: JoinInput = await evt.request.json()
+    const newUser = await User.create({
+        email: formData.email,
+        displayName: formData.displayName,
+        password: formData.password
+    })
+
     const token = jwt.sign(
         { _id: newUser._id },
         process.env.JWT_SECRET

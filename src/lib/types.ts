@@ -36,8 +36,8 @@ export type Project = {
 export type Team = {
     _id: string
     name: string
-    members: string[]
-    mods: string[]
+    members: UserData[]
+    mods: UserData[]
     creator: string
     owner: string
     projects: Project[]
@@ -50,6 +50,7 @@ export type UserData = {
     verified: boolean
     tokenLastSent: Date
     teams: Team[]
+    tier: 'deer' | 'wapiti' | 'moose' | 'admin'
 }
 
 export type Params = {

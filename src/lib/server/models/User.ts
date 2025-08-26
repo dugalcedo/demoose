@@ -12,6 +12,7 @@ export interface _UserInterface {
     verificationToken: string
     verified: boolean
     tokenLastSent: Date
+    tier: 'deer' | 'wapiti' | 'moose' | 'admin'
 }
 
 const UserSchema = new Schema<_UserInterface>({
@@ -57,6 +58,12 @@ const UserSchema = new Schema<_UserInterface>({
         type: Boolean,
         required: true,
         default: false
+    },
+    tier: {
+        type: String,
+        required: true,
+        default: 'deer',
+        enum: ['deer', 'wapiti', 'moose', 'admin']
     }
 })
 

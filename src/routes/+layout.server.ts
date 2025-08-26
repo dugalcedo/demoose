@@ -61,6 +61,8 @@ export const load = async (ctx): Promise<Data> => {
                         }
                     }
                 })
+                .populate({path: 'members'})
+                .populate({path: 'mods'})
 
             userData = {
                 _id: user._id.toString(),
@@ -68,7 +70,8 @@ export const load = async (ctx): Promise<Data> => {
                 displayName: user.displayName,
                 teams: JSON.parse(JSON.stringify(teams)),
                 verified: user.verified,
-                tokenLastSent: user.tokenLastSent
+                tokenLastSent: user.tokenLastSent,
+                tier: user.tier
             }
 
             // find team

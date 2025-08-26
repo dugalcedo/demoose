@@ -12,6 +12,9 @@
     import Confirm from "../components/Confirm.svelte";
 </script>
 
+<svelte:head>
+    <title>Demoose - Collaborate with other musicians</title>
+</svelte:head>
 
 <Header {data} />
 

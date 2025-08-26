@@ -24,5 +24,5 @@ export const GET = createDugdemoRequestHandler(async () => {
 import { Team } from '../../../../lib/server/models/models.js'
 
 async function script() {
-    await Team.deleteMany()
+    // await Team.deleteMany()
 }
