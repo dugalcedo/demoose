@@ -4,72 +4,37 @@
     import AddCommentForm from "./AddCommentForm.svelte";
     import AddInspirationForm from "./AddInspirationForm.svelte";
     import CommentTable from "./CommentTable.svelte";
+    import DemoResources from "./DemoResources.svelte";
+    import InspirationsTable from "./InspirationsTable.svelte";
 </script>
 
 {#if data.userData && data.team && data.project && data.track && data.demo}
 {@const demo = data.demo}
     <div class="demo-panel">
 
-        <!-- Links -->
-        <table>
-            <tbody>
-                <tr>
-                    <th>Audio URL</th>
-                    <td>{demo.audio_url || "N/A"}</td>
-                    <td>
-                        <button>
-                            {demo.audio_url ? 'Edit' : 'Add'}
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Project Files URL</th>
-                    <td>{demo.project_url || "N/A"}</td>
-                    <td>
-                        <button>
-                            {demo.project_url ? 'Edit' : 'Add'}
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="panels">
+            <div class="panel" style="grid-column: span 3;">
+                <!-- Links -->
+                <div class="head">
+                    <h4>Demo resources</h4>
+                </div>
+                <div class="body">
+                    <DemoResources {demo} />
+                </div>
+            </div>
+        </div>
 
         <!-- Inspirations & comments -->
         <section class="insp-comm">
             <div class="insp">
-                <h4>Inspirations</h4>
                 {#if !demo.inspirations?.length}
                     This demo has no inspirations.
                 {:else}
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>URL</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {#each demo.inspirations as insp (insp)}
-                                <tr>
-                                    <td>
-                                        {#if insp.url}
-                                            <a href={insp.url}>
-                                                {insp.url.slice(0, 30)}{#if insp.url.length > 30}...{/if}
-                                            </a>
-                                        {:else}
-                                            none
-                                        {/if}
-                                    </td>
-                                    <td>{insp.description}</td>
-                                </tr>
-                            {/each}
-                        </tbody>
-                    </table>
+                    <InspirationsTable inspirations={demo.inspirations} />
                 {/if}
                 <AddInspirationForm {data} />
             </div>
             <div class="comm">
-                <h4>Comments</h4>
                 {#if !demo.comments.length}
                     This demo has no comments.
                 {:else}
@@ -85,7 +50,9 @@
 <style>
     .insp-comm {
         display: grid;
+        margin-top: 2rem;
         grid-template-columns: 1fr 1fr;
+        column-gap: 2rem;
     }
 
     .insp, .comm {

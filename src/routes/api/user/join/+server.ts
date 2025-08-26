@@ -21,7 +21,7 @@ export const POST = createDugdemoRequestHandler(async (evt) => {
     const formData: JoinInput = await evt.request.json()
     const newUser = await User.create({
         email: formData.email,
-        displayName: formData.displayName,
+        displayName: formData.displayName.toLowerCase(),
         password: formData.password
     })
 

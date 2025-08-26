@@ -35,35 +35,48 @@
 </script>
 
 <div class="team-panel">
-    {#if userData.teams.length == 0}
-        <p>You do not have any teams.</p>
-    {:else}
-        <h3>Your teams</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Team name</th>
-                    <th>Your role</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each userData.teams as team, i (team._id)}
-                    <TeamPanelTr {team} {userData} />
-                {/each}
-            </tbody>
-        </table>
-    {/if}
-
-    <form class="create-team-form" onsubmit={createTeam}>
-        <h3 class="title">New team</h3>
-        <div class="field">
-            <label for="create-team-form_name">Team name</label>
-            <input type="text" required name="name">
+    <div class="panels">
+        {#if userData.teams.length == 0}
+            <p>You do not have any teams.</p>
+        {:else}
+            <div class="panel">
+                <div class="head">
+                    <h3>Your teams</h3>
+                </div>
+                <div class="body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Team name</th>
+                                <th>Your role</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {#each userData.teams as team, i (team._id)}
+                                <TeamPanelTr {team} {userData} />
+                            {/each}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {/if}
+        <div class="panel">
+            <div class="head">
+                <p>Create a team</p>
+            </div>
+            <div class="body">
+                <form class="create-team-form" onsubmit={createTeam}>
+                    <div class="field">
+                        <label for="create-team-form_name">Team name</label>
+                        <input type="text" required name="name">
+                    </div>
+                    <button type="submit">
+                        Create team
+                    </button>
+                    <span class="error">{createTeamError}</span>
+                </form>
+            </div>
         </div>
-        <button type="submit">
-            Create team
-        </button>
-        <span class="error">{createTeamError}</span>
-    </form>
+    </div>
 </div>

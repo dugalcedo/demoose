@@ -84,4 +84,8 @@
             text-align: center;
         }
     }
+
+    form {
+        font-size: .8rem;
+    }
 </style>

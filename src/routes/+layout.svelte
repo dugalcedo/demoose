@@ -1,6 +1,7 @@
 <script lang="ts">
     import "../css/_main_.css"
     import Header from "../components/Header.svelte";
+    import NavigationIndicator from "../components/NavigationIndicator.svelte";
     import { onMount, type Snippet } from "svelte";
     import type { Data } from "../lib/types.js";
     const { children, data } : { children: Snippet, data: Data } = $props()
@@ -22,3 +23,4 @@
 
 <!-- modals -->
 <Confirm />
+<NavigationIndicator />

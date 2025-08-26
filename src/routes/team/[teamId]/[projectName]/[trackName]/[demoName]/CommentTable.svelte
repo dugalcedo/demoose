@@ -10,6 +10,7 @@
 </script>
 
 <table>
+    <caption>Comments</caption>
     <thead>
         <tr>
             <th>Comment</th>
@@ -32,6 +33,7 @@
     table {
         width: 100%;
         font-size: .7rem;
+        margin-bottom: 4rem;
 
         & tr {
             & > td, th {

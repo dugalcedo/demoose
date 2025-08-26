@@ -40,38 +40,56 @@
 </script>
 
 {#if data.userData && data.team && data.project && data.track}
-    {#if data.track.demos.length === 0}
-        <p>This track has no demos.</p>
-    {:else}
-        <h3>{data.track.name}'s demos</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Demo name</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each data.track.demos as demo}
-                    <tr>
-                        <th>{demo.name}</th>
-                        <th>
-                            <a href="/team/{data.team._id}/{data.project.name}/{data.track.name}/{demo.name}">Manage demo</a>
-                        </th>
-                    </tr>
-                {/each}
-            </tbody>
-        </table>
-    {/if}
-    <form class="create-demo-form" onsubmit={handleCreateDemo}>
-        <h4>Create new demo</h4>
-        <div class="field">
-            <label for="create-demo-form_name">Demo name</label>
-            <input type="text" id="create-demo-form_name" name="name" required>
+    <div class="panels">
+        {#if data.track.demos.length === 0}
+            <p>This track has no demos.</p>
+        {:else}
+
+            <div class="panel">
+                <div class="head">
+                    <h3>{data.track.name}'s demos</h3>
+                </div>
+                <div class="body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Demo name</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {#each data.track.demos as demo}
+                                <tr>
+                                    <th>{demo.name}</th>
+                                    <th>
+                                        <a href="/team/{data.team._id}/{data.project.name}/{data.track.name}/{demo.name}">Manage demo</a>
+                                    </th>
+                                </tr>
+                            {/each}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        {/if}
+
+        <div class="panel">
+            <div class="head">
+                <h4>Create new demo</h4>
+            </div>
+            <div class="body">
+                <form class="create-demo-form" onsubmit={handleCreateDemo}>
+                    <div class="field">
+                        <label for="create-demo-form_name">Demo name</label>
+                        <input type="text" id="create-demo-form_name" name="name" required>
+                    </div>
+                    <button type="submit">
+                        Create new demo in "{data.team.name}/{data.project.name}/{data.track.name}"
+                    </button>
+                    <span class="error">{createDemoError}</span>
+                </form>
+            </div>
         </div>
-        <button type="submit">
-            Create new demo in "{data.team.name}/{data.project.name}/{data.track.name}"
-        </button>
-        <span class="error">{createDemoError}</span>
-    </form>
+
+    </div>
 {/if}

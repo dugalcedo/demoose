@@ -62,3 +62,9 @@
 {:else}
     <p>MISSING CONTEXT</p>
 {/if}
+
+<style>
+    form {
+        font-size: .8rem;
+    }
+</style>

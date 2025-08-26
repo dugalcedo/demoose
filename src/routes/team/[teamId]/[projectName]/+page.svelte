@@ -38,39 +38,59 @@
     }
 </script>
 
-{#if data.userData && data.team && data.project}
-    {#if data.project.tracks.length == 0}
-        <p>This project has no tracks.</p>
-    {:else}
-        <h3>{data.project.name}'s tracks</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Track name</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each data.project.tracks as track}
-                    <tr>
-                        <td>{track.name}</td>
-                        <td>
-                            <a href="/team/{data.team._id}/{data.project.name}/{track.name}">Manage</a>
-                        </td>
-                    </tr>
-                {/each}
-            </tbody>
-        </table>
+<div class="panels">
+    {#if data.userData && data.team && data.project}
+        {#if data.project.tracks.length == 0}
+            <p>This project has no tracks.</p>
+        {:else}
+            <div class="panel">
+                <div class="head">
+                    <h3>{data.project.name}'s tracks</h3>
+                </div>
+                <div class="body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Track name</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {#each data.project.tracks as track}
+                                <tr>
+                                    <td>{track.name}</td>
+                                    <td>
+                                        <a href="/team/{data.team._id}/{data.project.name}/{track.name}">Manage</a>
+                                    </td>
+                                </tr>
+                            {/each}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {/if}
+
+        <div class="panel">
+            <div class="head">
+                <h4>Create new track</h4>
+            </div>
+            <div class="body">
+                <form class="add-track-form" onsubmit={handleCreateTrack}>
+                    <div class="field">
+                        <label for="add-track-form_name">Track name</label>
+                        <input type="text" id="add-track-form_name" name="name" required>
+                    </div>
+                    <div class="foot">
+                        <button type="submit">
+                            Create new track in "{data.team.name}/{data.project.name}"
+                        </button>
+                        <span class="error">
+                            {createTrackError}
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     {/if}
-    <form class="add-track-form" onsubmit={handleCreateTrack}>
-        <h4>Create new track</h4>
-        <label for="add-track-form_name">Track name</label>
-        <input type="text" id="add-track-form_name" name="name" required>
-        <button type="submit">
-            Create new track in "{data.team.name}/{data.project.name}"
-        </button>
-        <span class="error">
-            {createTrackError}
-        </span>
-    </form>
-{/if}
+</div>

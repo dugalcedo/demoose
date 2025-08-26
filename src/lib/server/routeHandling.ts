@@ -121,7 +121,7 @@ const parseError = (error: undefined | any): { status: number, message: string }
     let status = error?.status || 500
     let message = error?.message || "Internal server error"
 
-    if (error._message.includes('validation')) {
+    if (error._message?.includes('validation')) {
         message = Object.values(error.errors).map(({ properties }: any) => {
             return `${properties?.path}: ${properties?.message}`
         }).join(', ')

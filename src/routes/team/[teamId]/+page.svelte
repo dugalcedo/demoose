@@ -3,6 +3,7 @@
     import type { Data } from "../../../lib/types.js";
     import { getErrorMessage } from "../../../lib/index.js";
     import TeamMembersRow from "./TeamMembersRow.svelte";
+    import InviteMemberForm from "./InviteMemberForm.svelte";
     const { 
         data 
     } : { 
@@ -51,67 +52,75 @@
 </script>
 
 {#if data.userData && data.team}
-    {#if data.team.projects.length == 0}
-        <p>This team has no projects.</p>
-    {:else}
-        <h3>Projects</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Project name</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each data.team.projects as project}
+    <div class="panels">
+        {#if data.team.projects.length == 0}
+            <p>This team has no projects.</p>
+        {:else}
+            <div class="panel">
+                <div class="head">
+                    <h3>Projects</h3>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Project name</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {#each data.team.projects as project}
+                            <tr>
+                                <td>{project.name}</td>
+                                <td>
+                                    <a href="/team/{data.team._id}/{project.name}">Manage</a>
+                                </td>
+                            </tr>
+                        {/each}
+                    </tbody>
+                </table>
+            </div>
+        {/if}
+        <div class="panel">
+            <div class="head">
+                <h3>Members</h3>
+            </div>
+            <table>
+                <thead>
                     <tr>
-                        <td>{project.name}</td>
-                        <td>
-                            <a href="/team/{data.team._id}/{project.name}">Manage</a>
-                        </td>
+                        <th>Display name</th>
+                        <th>Role</th>
+                        {#if role === 'owner'}
+                            <th></th>
+                        {/if}
                     </tr>
-                {/each}
-            </tbody>
-        </table>
-    {/if}
-
-    <h3>Mebers</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Display name</th>
-                <th>Role</th>
-                {#if role === 'owner'}
-                    <th></th>
-                {/if}
-            </tr>
-        </thead>
-        <tbody>
-            {#each data.team.members as member}
-                <TeamMembersRow {member} {role} data={data} team={data.team} />
-            {/each}
-            {#if ['owner', 'mod'].includes(role)}
-                <tr>
-                    <td colspan="100">
-                        <input type="text" aria-label="Invite user" name="username" placeholder="Enter username">
-                        <button>Invite user</button>
-                        <br>
-                        <span class="error"></span>
-                    </td>
-                </tr>
-            {/if}
-        </tbody>
-    </table>
-
-    <form class="add-project-form" onsubmit={handleCreateProject}>
-        <h4>Create new project</h4>
-        <div class="field">
-            <label for="add-project-form_name">Project name</label>
-            <input type="text" name="name" required>
+                </thead>
+                <tbody>
+                    {#each data.team.members as member}
+                        <TeamMembersRow {member} {role} data={data} team={data.team} />
+                    {/each}
+                    {#if ['owner', 'mod'].includes(role)}
+                        <InviteMemberForm {data} team={data.team} />
+                    {/if}
+                </tbody>
+            </table>
         </div>
-        <button type="submit">
-            Create project in team "{data.team.name}"
-        </button>
-        <span class="error">{createProjectError}</span>
-    </form>
+
+        <div class="panel">
+            <div class="head">
+                <h4>Create new project</h4>
+            </div>
+            <div class="body">
+                <form class="add-project-form" onsubmit={handleCreateProject}>
+                    <div class="field">
+                        <label for="add-project-form_name">Project name</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <button type="submit">
+                        Create project in team "{data.team.name}"
+                    </button>
+                    <span class="error">{createProjectError}</span>
+                </form>
+            </div>
+        </div>
+    </div>
 {/if}

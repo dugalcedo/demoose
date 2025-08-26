@@ -9,7 +9,7 @@
     const role = $derived.by(() => {
         if (!data.team || !data.userData) return 'member'
         if (data.team.owner === data.userData._id) return 'owner'
-        if (data.team.mods.includes(data.userData._id)) return 'mod'
+        if (data.team.mods.map(m => m._id).includes(data.userData._id)) return 'mod'
         return 'member'
     })
 

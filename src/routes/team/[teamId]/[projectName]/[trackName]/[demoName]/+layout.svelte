@@ -4,6 +4,7 @@
     const { data, children } : { data: Data, children: Snippet } = $props()
     import { openConfirmModal } from "../../../../../../lib/stores/modals.svelte.js";
     import { getErrorMessage } from "../../../../../../lib/index.js";
+    import dayjs from 'dayjs'
 
     let deleteDemoError = $state("")
 
@@ -65,15 +66,32 @@
                 DEMO: 
                 <a href="/team/{data.team._id}/{data.project.name}/{data.track.name}/{data.demo.name}">{data.demo.name}</a>
             </h4>
-            {#if data.isTeamOwner}
-                <div class="del">
-                    <button class="red" onclick={handleDeleteDemoClick}>
-                        Delete demo "{data.demo.name}"
-                    </button>
-                    <span class="error"></span>
+            <div class="right">
+                <div class="date">
+                    Created: {dayjs(data.demo.date).format("YYYY-MM-DD HH:ss")}
                 </div>
-            {/if}
+                {#if data.isTeamOwner}
+                    <div class="del">
+                        <button class="red" onclick={handleDeleteDemoClick}>
+                            Delete demo "{data.demo.name}"
+                        </button>
+                        <span class="error"></span>
+                    </div>
+                {/if}
+            </div>
         </div>
         <div class="body">{@render children()}</div>
     {/if}
 </div>
+
+<style>
+    .head .right {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .date {
+        font-size: .7rem;
+    }
+</style>

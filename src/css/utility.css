@@ -97,3 +97,42 @@
     color: #fd4141;
     border-bottom: 1px dashed #fd4141;
 }
+
+.panels {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-top: 1rem;
+    gap: 1rem;
+
+    > *:not(.panel) {
+        grid-column: span 3;
+    }
+}
+
+@media (min-width: 700px) {
+    .panels {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 1000px) {
+    .panels {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+.panel {
+    & > .head {
+        background-color: rgba(255, 255, 255, .2);
+        padding: .5rem;
+    }
+
+    & > .body {
+        border: 1px solid rgba(255, 255, 255, .2);
+        padding: .5rem;
+
+        & > form {
+            border: 0;
+        }
+    }
+}

@@ -57,10 +57,26 @@ textarea {
 
 table {
     border-collapse: collapse;
+    width: 100%;
 
     & td, th {
-        border: 1px solid gray;
-        padding: .5rem;
+        padding: .25rem;
+    }
+
+    & tr > th, tr > td {
+        &:not(:last-child) {
+            border-right: 1px solid gray;
+        }
+    }
+
+    & > thead > tr {
+        border-bottom: 1px solid gray;
+    }
+
+    & > tbody > tr {
+        &:not(:last-child) {
+            border-bottom: 1px solid gray;
+        }
     }
 }
 

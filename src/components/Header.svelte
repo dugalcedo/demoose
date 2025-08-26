@@ -24,13 +24,14 @@
                 {#if data.userData.tier == 'admin'}
                     <a href="/admin">Admin panel</a>
                 {/if}
+            {/if}
+            {#if data.unverifiedUserData || data.userData}
                 <button onclick={logOut}>
                     Log out
                 </button>
-            {:else if data.unverifiedUserData}
-                <button onclick={logOut}>
-                    Log out
-                </button>
+                <a href="/notifications" class="bell-btn">
+                    <img src="/icons/bell.svg" alt="bell" style="width: 25px;">
+                </a>
             {:else}
                 <a href="/auth">Log in / join</a>
             {/if}
@@ -69,5 +70,11 @@
         & a {
             padding: 1rem;
         }
+    }
+
+    .bell-btn {
+        border: 0;
+        background-color: transparent;
+        box-shadow: 0;
     }
 </style>
