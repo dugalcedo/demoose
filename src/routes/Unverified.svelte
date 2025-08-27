@@ -35,7 +35,7 @@
     const handleClick: MouseEventHandler<HTMLButtonElement> = async (e) => {
         e.currentTarget.disabled = true
 
-        const res = await fetch("/api/sendValidationEmail")
+        const res = await fetch("/api/user/sendVerificationEmail")
 
         if (!res.ok) {
             sendEmailError = await getErrorMessage(res)
@@ -52,14 +52,14 @@
     <!-- Button and error -->
     <div>
         <button disabled={!canSend} onclick={handleClick}>
-            Send validation email
+            Send verification email
         </button>
         <span class="error">{sendEmailError}</span>
     </div>
 
     {#if !canSend}
         <div>
-            <p>You must wait before you can send another validation email.</p>
+            <p>You must wait before you can send another verification email.</p>
             <p>Time remaining: {pad0(minLeft)}:{pad0(secLeft)}</p>
         </div>
     {/if}

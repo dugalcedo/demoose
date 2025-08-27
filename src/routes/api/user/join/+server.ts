@@ -3,6 +3,7 @@ dotenv.config()
 import { createDugdemoRequestHandler } from "../../../../lib/server/routeHandling.js";
 import { User } from "../../../../lib/server/models/models.js";
 import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 
 type JoinInput = {
     email: string
@@ -22,7 +23,7 @@ export const POST = createDugdemoRequestHandler(async (evt) => {
     const newUser = await User.create({
         email: formData.email,
         displayName: formData.displayName.toLowerCase(),
-        password: formData.password
+        password: await bcrypt.hash(formData.password, 7)
     })
 
     const token = jwt.sign(

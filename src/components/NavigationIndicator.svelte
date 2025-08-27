@@ -24,8 +24,8 @@
         width: 100dvw;
         height: 100dvh;
         display: none;
-        background-color: rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(1px);
+        background-color: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(5px);
 
         &.shown {
             display: flex;

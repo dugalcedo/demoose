@@ -1,9 +1,11 @@
 import dotenv from 'dotenv'
 dotenv.config()
-import { User, Team } from "../lib/server/models/models.js"
+import { User, Team, Invite, type UserType, type TeamType, type InviteType } from "../lib/server/models/models.js"
 import jwt from 'jsonwebtoken'
-import type { Data, UserData, Team as TeamT, Project, Track, Demo, UnverifiedUserData } from '../lib/types.js'
+import type { Data, UserData, Team as TeamT, Project, Track, Demo, UnverifiedUserData, Invite as InviteT } from '../lib/types.js'
 import { useDB } from '../lib/server/db.js'
+
+const OMIT_SENSITIVE_DATA = ['-password', '-email', '-tokenLastSent', '-verificationToken', '-verified', '-resetEmailToken'];
 
 export const load = async (ctx): Promise<Data> => {
     await useDB()
@@ -15,6 +17,7 @@ export const load = async (ctx): Promise<Data> => {
     let isTeamOwner: boolean | undefined
     let demo: Demo | undefined
     let unverifiedUserData: UnverifiedUserData | undefined
+    let invites: InviteT[] = []
 
     const token = ctx.cookies.get('dugdemotoken')
 
@@ -55,24 +58,22 @@ export const load = async (ctx): Promise<Data> => {
                                 path: 'comments',
                                 populate: {
                                     path: 'author',
-                                    select: ['-password', '-email', '-tokenLastSent', '-verificationToken', '-verified']
+                                    select: OMIT_SENSITIVE_DATA
                                 }
                             }
                         }
                     }
                 })
-                .populate({path: 'members'})
-                .populate({path: 'mods'})
+                .populate({path: 'members', select: OMIT_SENSITIVE_DATA})
+                .populate({path: 'mods', select: OMIT_SENSITIVE_DATA})
 
-            userData = {
-                _id: user._id.toString(),
-                email: user.email,
-                displayName: user.displayName,
-                teams: JSON.parse(JSON.stringify(teams)),
-                verified: user.verified,
-                tokenLastSent: user.tokenLastSent,
-                tier: user.tier
-            }
+            const foundInvites = await Invite.find({ invitee: user._id })
+                                    .populate({ path: 'inviter', select: OMIT_SENSITIVE_DATA })
+                                    .populate({ path: 'invitee', select: OMIT_SENSITIVE_DATA })
+                                    .populate({ path: 'team' })
+
+
+            userData = toUserDTO(user, teams, foundInvites)
 
             // find team
             if (ctx.params.teamId) {
@@ -116,5 +117,18 @@ export const load = async (ctx): Promise<Data> => {
         isTeamOwner,
         demo,
         unverifiedUserData
+    }
+}
+
+function toUserDTO(user: UserType, teams: TeamType[], invites: InviteType[]): UserData {
+    return {
+        _id: user._id.toString(),
+        email: user.email,
+        displayName: user.displayName,
+        teams: JSON.parse(JSON.stringify(teams)),
+        verified: user.verified,
+        tokenLastSent: user.tokenLastSent,
+        tier: user.tier,
+        invites: JSON.parse(JSON.stringify(invites))
     }
 }

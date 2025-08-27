@@ -26,11 +26,15 @@
                 {/if}
             {/if}
             {#if data.unverifiedUserData || data.userData}
+            {@const notifCount = data.userData?.invites.length}
                 <button onclick={logOut}>
                     Log out
                 </button>
                 <a href="/notifications" class="bell-btn">
                     <img src="/icons/bell.svg" alt="bell" style="width: 25px;">
+                    {#if notifCount}
+                        <div class="notif-count">{notifCount}</div>
+                    {/if}
                 </a>
             {:else}
                 <a href="/auth">Log in / join</a>
@@ -76,5 +80,21 @@
         border: 0;
         background-color: transparent;
         box-shadow: 0;
+        position: relative;
+    }
+
+    .notif-count {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: magenta;
+        color: white;
+        width: 25px;
+        height: 25px;
+        font-size: .8rem;
+        border-radius: 100%;
     }
 </style>

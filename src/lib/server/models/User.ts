@@ -10,6 +10,7 @@ export interface _UserInterface {
     displayName: string
     password: string
     verificationToken: string
+    resetEmailToken?: string
     verified: boolean
     tokenLastSent: Date
     tier: 'deer' | 'wapiti' | 'moose' | 'admin'
@@ -64,12 +65,14 @@ const UserSchema = new Schema<_UserInterface>({
         required: true,
         default: 'deer',
         enum: ['deer', 'wapiti', 'moose', 'admin']
+    },
+    resetEmailToken: {
+        type: String
     }
 })
 
 
 UserSchema.pre('save', async function(next) {
-    this.password = await bcrypt.hash(this.password, 8)
     this.verificationToken = v4()
     next()
 })

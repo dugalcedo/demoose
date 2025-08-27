@@ -68,11 +68,19 @@
                 {demo.has_upload ? "Replace" : "Upload"}
             </button>
             <span class="error">{uploadError}</span>
+            <p class="error">
+                NOTE: Dug is currently hosting this app on Vercel's free tier, which means uploads greater than 4.5MB are not currently possible. If you want this feature, <a href="/contact">contact Dug</a> and let him know.
+            </p>
         </div>
     </form>
 {/if}
 
 <style>
+    .error {
+        margin-top: 1rem;
+        background-color: maroon;
+        color: white;
+    }
     form {
         margin: 0;
         padding: 0;

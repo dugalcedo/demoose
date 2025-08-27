@@ -1,10 +1,10 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { Team, PopulatedInvite } from "../../../lib/types.js";
+    import type { Team, Invite } from "../../../lib/types.js";
     import { getErrorMessage } from "../../../lib/index.js";
     const { team }: { team: Team } = $props()
 
-    let invites: PopulatedInvite[] | null = $state(null)
+    let invites: Invite[] | null = $state(null)
     let invitesError = $state("")
 
     onMount(async () => {
@@ -14,7 +14,7 @@
             return
         }
         const result = await res.json()
-        invites = result.data.filter((inv: PopulatedInvite) => inv.status === 'pending')
+        invites = result.data.filter((inv: Invite) => inv.status === 'pending')
     })
 
 

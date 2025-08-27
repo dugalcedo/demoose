@@ -2,6 +2,7 @@
     import "../css/_main_.css"
     import Header from "../components/Header.svelte";
     import NavigationIndicator from "../components/NavigationIndicator.svelte";
+    import ForgotPasswordModal from "../components/ForgotPasswordModal.svelte";
     import { onMount, type Snippet } from "svelte";
     import type { Data } from "../lib/types.js";
     const { children, data } : { children: Snippet, data: Data } = $props()
@@ -11,11 +12,14 @@
     })
 
     import Confirm from "../components/Confirm.svelte";
+    import UnderConstruction from "../components/UnderConstruction.svelte";
 </script>
 
 <svelte:head>
     <title>Demoose - Collaborate with other musicians</title>
 </svelte:head>
+
+<UnderConstruction />
 
 <Header {data} />
 
@@ -24,3 +28,4 @@
 <!-- modals -->
 <Confirm />
 <NavigationIndicator />
+<ForgotPasswordModal />

@@ -2,17 +2,12 @@ import { Types } from "mongoose"
 
 export type Invite = {
     _id: Types.ObjectId
-    inviter: string
-    invitee: string
-    status: 'pending' | 'rejected' | 'accepted'
-    team: string
-}
-
-export type PopulatedInvite = Invite & {
     inviter: UserData
     invitee: UserData
+    status: 'pending' | 'rejected' | 'accepted'
     team: Team
 }
+
 
 export type Inspiration = {
     _id: Types.ObjectId
@@ -66,6 +61,7 @@ export type UserData = {
     tokenLastSent: Date
     teams: Team[]
     tier: 'deer' | 'wapiti' | 'moose' | 'admin'
+    invites: Invite[]
 }
 
 export type Params = {
@@ -74,6 +70,7 @@ export type Params = {
     trackName?: string
     demoName?: string
     verificationToken?: string
+    resetCode?: string
 }
 
 export type UnverifiedUserData = {

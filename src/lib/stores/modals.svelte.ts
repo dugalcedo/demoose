@@ -1,3 +1,5 @@
+// CONFIRM
+
 type ConfirmConfig = {
     title: string
     text: string
@@ -17,3 +19,17 @@ export const confirmStore = $state<ConfirmStoreState>({
 export const openConfirmModal = (config: ConfirmConfig) => {
     confirmStore.state = config
 }
+
+// RESET PASSWORD
+
+type ResetPasswordConfig = {
+    open: boolean
+}
+
+type ResetPasswordState = {
+    state: null | ResetPasswordConfig
+}
+
+export const resetPasswordStore = $state<ResetPasswordState>({
+    state: null
+})

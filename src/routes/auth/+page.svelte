@@ -1,6 +1,7 @@
 <script lang="ts">
     import Toggle from "../../components/Toggle.svelte";
     import Form from "../../components/Form.svelte";
+    import { resetPasswordStore } from "../../lib/stores/modals.svelte.js";
 
     let formType = $state<'Log in'|'Join'>('Log in');
     let formData = $state({
@@ -25,6 +26,12 @@
     url={`/api/user/${formType == 'Join' ? 'join' : 'login'}`}
     method="POST"
     onSuccess="/"
+    beforeSubmit={(e, fd, api) => {
+        if (formType === 'Join' && (formData.password !== formData.password2)) {
+            api.err("Passwords must match")
+        }
+        return fd
+    }}
     body={formData}
 >
     <div class="field">
@@ -48,3 +55,9 @@
         </div>
     {/if}
 </Form>
+
+<button onclick={() => resetPasswordStore.state = { open: true }}>
+    Reset forgotten password
+</button>
+
+
