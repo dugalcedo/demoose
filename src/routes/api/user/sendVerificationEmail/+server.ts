@@ -1,6 +1,6 @@
-import { createDugdemoRequestHandler } from "../../../lib/server/routeHandling.js";
-import { sendValidationCode } from "../../../lib/server/email.js";
-import { User } from "../../../lib/server/models/models.js"
+import { createDugdemoRequestHandler } from "../../../../lib/server/routeHandling.js";
+import { sendValidationCode } from "../../../../lib/server/email.js";
+import { User } from "../../../../lib/server/models/models.js"
 
 export const GET = createDugdemoRequestHandler(async (evt, ctx) => {
     if (!ctx.user) throw {
