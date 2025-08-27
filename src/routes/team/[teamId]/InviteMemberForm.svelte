@@ -11,24 +11,26 @@
     } = $props()
 
 
+    const handleSuccess = () => {
+
+    }
+
 </script>
 
 
-<tr>
-    <td colspan="100">
-        <Form 
-            buttonText="Invite user"
-            url="/api/user/invite"
-            method="POST"
-            body={{
-                teamId: team._id,
-                inviter: data.userData?._id
-            }}
-            style="padding: 0; border: 0;"
-        >
-            <div class="field">
-                <input style="grid-column: span 2;" type="text" aria-label="Invite user" name="invitee" placeholder="Enter name" required>
-            </div>
-        </Form>
-    </td>
-</tr>
+
+<Form 
+    buttonText="Invite user"
+    url="/api/user/invite"
+    method="POST"
+    body={{
+        teamId: team._id,
+        inviter: data.userData?._id
+    }}
+    style="padding: 0; border: 0;"
+    onSuccess={handleSuccess}
+>
+    <div class="field">
+        <input style="grid-column: span 2;" type="text" aria-label="Invite user" name="invitee" placeholder="Enter name" required>
+    </div>
+</Form>

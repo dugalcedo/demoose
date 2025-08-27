@@ -12,6 +12,7 @@ type DugDemoResponse = {
     status?: number
     error?: boolean
     data?: any
+    _custom?: Response
 }
 
 type DugdemoRequestHandlerContext = {
@@ -41,6 +42,8 @@ export const createDugdemoRequestHandler = (callback: DugdemoRequestHandlerCallb
             const ctx = await getContext(evt, options)
             const dugDemoResponse = await callback(evt, ctx)
             if (dugDemoResponse.error) throw dugDemoResponse;
+
+            if (dugDemoResponse._custom) return dugDemoResponse._custom;
 
             return Response.json({
                 message: dugDemoResponse.message,

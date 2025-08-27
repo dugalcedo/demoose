@@ -1,5 +1,19 @@
 import { Types } from "mongoose"
 
+export type Invite = {
+    _id: Types.ObjectId
+    inviter: string
+    invitee: string
+    status: 'pending' | 'rejected' | 'accepted'
+    team: string
+}
+
+export type PopulatedInvite = Invite & {
+    inviter: UserData
+    invitee: UserData
+    team: Team
+}
+
 export type Inspiration = {
     _id: Types.ObjectId
     description: string
@@ -21,6 +35,7 @@ export type Demo = {
     inspirations: Inspiration[]
     audio_url?: string
     project_url?: string
+    has_upload?: boolean
 }
 
 export type Track = {

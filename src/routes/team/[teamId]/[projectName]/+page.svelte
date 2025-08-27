@@ -1,41 +1,9 @@
 <script lang="ts">
-    import type { FormEventHandler } from "svelte/elements";
     import type { Data } from "../../../../lib/types.js";
-    import { getErrorMessage } from "../../../../lib/index.js";
+    import Form from "../../../../components/Form.svelte";
     const { data } : { data: Data } = $props()
 
-    let createTrackError = $state("")
 
-    const handleCreateTrack: FormEventHandler<HTMLFormElement> = async (e) => {
-        e.preventDefault()
-        createTrackError = ""
-
-        if (!data.team || !data.userData || !data.project) {
-            createTrackError = "MISSING CONTEXT"
-            return
-        }
-
-        const url = "/api/track/add"
-        const options = {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                ...Object.fromEntries(new FormData(e.currentTarget)),
-                userId: data.userData._id,
-                teamId: data.team._id,
-                projectName: data.project.name
-            })
-        }
-
-        const res = await fetch(url, options)
-
-        if (!res.ok) {
-            createTrackError = await getErrorMessage(res)
-            return
-        }
-
-        window.location.reload()
-    }
 </script>
 
 <div class="panels">
@@ -75,20 +43,21 @@
                 <h4>Create new track</h4>
             </div>
             <div class="body">
-                <form class="add-track-form" onsubmit={handleCreateTrack}>
+                <Form
+                    buttonText="Create track"
+                    url="/api/track/add"
+                    method="POST"
+                    body={{
+                        userId: data.userData._id,
+                        teamId: data.team._id,
+                        projectName: data.project.name
+                    }}
+                >
                     <div class="field">
                         <label for="add-track-form_name">Track name</label>
                         <input type="text" id="add-track-form_name" name="name" required>
                     </div>
-                    <div class="foot">
-                        <button type="submit">
-                            Create new track in "{data.team.name}/{data.project.name}"
-                        </button>
-                        <span class="error">
-                            {createTrackError}
-                        </span>
-                    </div>
-                </form>
+                </Form>
             </div>
         </div>
 

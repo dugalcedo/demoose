@@ -3,6 +3,7 @@
     import TeamMembersRow from "./TeamMembersRow.svelte";
     import InviteMemberForm from "./InviteMemberForm.svelte";
     import Form from "../../../components/Form.svelte";
+    import PendingInvites from "./PendingInvites.svelte";
 
     const { 
         data 
@@ -66,11 +67,12 @@
                     {#each data.team.members as member}
                         <TeamMembersRow {member} {role} data={data} team={data.team} />
                     {/each}
-                    {#if ['owner', 'mod'].includes(role)}
-                        <InviteMemberForm {data} team={data.team} />
-                    {/if}
+                    <PendingInvites team={data.team} />
                 </tbody>
             </table>
+            {#if ['owner', 'mod'].includes(role)}
+                <InviteMemberForm {data} team={data.team} />
+            {/if}
         </div>
 
         <div class="panel">

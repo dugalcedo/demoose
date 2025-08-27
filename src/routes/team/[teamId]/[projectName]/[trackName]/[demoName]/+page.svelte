@@ -19,7 +19,7 @@
                     <h4>Demo resources</h4>
                 </div>
                 <div class="body">
-                    <DemoResources {demo} />
+                    <DemoResources user={data.userData} {data} {demo} />
                 </div>
             </div>
         </div>
@@ -57,5 +57,11 @@
 
     .insp, .comm {
         padding: 1rem;
+    }
+
+    :global(.insp-comm caption) {
+        background-color: rgba(0, 0, 0, 0.2);
+        padding: .25rem;
+        font-size: .9rem;
     }
 </style>

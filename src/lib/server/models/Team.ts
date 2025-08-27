@@ -75,6 +75,7 @@ export interface _DemoInterface {
     inspirations: _InspirationInterface[]
     audio_url?: string
     project_url?: string
+    has_upload?: boolean
 }
 
 const DemoSubdoc = new Schema<_DemoInterface>({
@@ -119,7 +120,10 @@ const DemoSubdoc = new Schema<_DemoInterface>({
                 }
             }
         ]
-    }
+    },
+    has_upload: {
+        type: Boolean
+    },
 })
 
 export interface _TrackInterface {
